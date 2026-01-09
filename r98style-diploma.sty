@@ -1,0 +1,328 @@
+% \RequirePackage[T1,T2A]{fontenc}
+% \RequirePackage[T1,T2A,X2]{fontenc}
+% \RequirePackage[T1,X2,T2A]{fontenc}
+% \RequirePackage[T2A]{fontenc} % Має проблему із заміною української «і» на латинську
+\RequirePackage[X2]{fontenc} % Має проблему з англійськими символами, потрібно вручну перемикати мову
+
+\RequirePackage[utf8]{inputenc}
+
+% Підключаємо додатковий пакет для шрифтів 14 pt
+\RequirePackage[14pt]{extsizes}
+
+% Українська та англійська мови з переносами
+\RequirePackage[english, ukrainian]{babel}
+
+% Придушення висячих рядків
+\clubpenalty=10000
+\widowpenalty=10000
+
+% Символи градуса та інші
+\RequirePackage{
+        textcomp,
+        gensymb
+    }
+
+% Формули, математичні шрифти, посилання, списки тощо
+\RequirePackage{
+        amssymb,
+        amsfonts,
+        amsmath,
+        mathtext,
+        cite,
+        enumerate,
+        float,
+        color
+    }
+
+\RequirePackage{
+        enumitem,
+        fancyvrb
+    }
+
+% \RequirePackage{subcaption}
+
+% Гіперпосилання
+\RequirePackage[
+        pdftex,
+        unicode,
+        colorlinks,
+        % black,
+        linkcolor=black,
+        %citecolor=red,
+        citecolor=black,
+        urlcolor=black,
+        bookmarksopen,
+        pdfhighlight=/N
+    ]{hyperref}
+
+% Пакет для вставки зображень
+\RequirePackage{graphicx}
+\RequirePackage{subfigure}
+
+\makeatletter
+\renewcommand\p@subfigure{\thefigure~}
+\makeatother
+
+% Поля сторінки
+\RequirePackage[paper=a4paper,
+                left=3cm,
+                right=1.5cm,
+                top=2cm,
+                bottom=2cm
+    ]{geometry}
+
+% Пакет для налаштування міжрядкових інтервалів
+\RequirePackage{setspace}
+
+% Пакет для таблиць
+\RequirePackage{hhline}
+\RequirePackage{multirow}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{tabulary}
+\RequirePackage{makecell}
+\RequirePackage{color,colortbl}
+\RequirePackage{longtable}
+\RequirePackage{rotating}
+\RequirePackage{lscape}
+
+% Щоб «Додаток», «Вступ» не нумерувалися
+%\RequirePackage{tocvsec2}
+
+% Команди преамбули
+\RequirePackage{bigstrut}
+\RequirePackage{paralist}
+\RequirePackage{pdfpages}
+
+% Перевизначаємо міжрядковий інтервал
+%\renewcommand{\baselinestretch}{1.5}
+\onehalfspacing
+
+% Перевизначаємо списки
+\renewcommand{\theenumi}{\arabic{enumi}.}
+\renewcommand{\labelenumi}{\arabic{enumi}.}
+\renewcommand{\theenumii}{.\arabic{enumii}.}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
+\renewcommand{\theenumiii}{.\arabic{enumiii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}
+
+% Нумерація рисунків — від початку розділу
+\renewcommand{\thefigure}{\thechapter\arabic{figure}}
+\renewcommand{\thesubfigure}{(\alph{subfigure})}
+
+% Нумерація формул — від початку розділу
+\renewcommand{\theequation}{\thechapter\arabic{equation}}
+
+% Нумерація таблиць — від початку розділу
+\renewcommand{\thetable}{\thechapter\arabic{table}}
+
+% Лічильники
+\RequirePackage{etoolbox}
+
+\newcounter{totfigures}
+\newcounter{tottables}
+\newcounter{totpages}
+
+\providecommand\totfig{}
+\providecommand\tottab{}
+\providecommand\totpag{}
+
+\makeatletter
+\AtEndDocument{
+  \addtocounter{totfigures}{\value{figure}}
+  \addtocounter{tottables}{\value{table}}
+  \addtocounter{totpages}{\value{page}}
+  \immediate\write\@mainaux{
+    \string\gdef\string\totfig{\number\value{totfigures}}
+    \string\gdef\string\tottab{\number\value{tottables}}
+    \string\gdef\string\totpag{\number\value{totpages}}
+  }
+}
+\makeatother
+
+\pretocmd{\chapter}{\addtocounter{totfigures}{\value{figure}}\setcounter{figure}{0}}{}{}
+\pretocmd{\chapter}{\addtocounter{tottables}{\value{table}}\setcounter{table}{0}}{}{}
+
+% Пакет для перевизначення формату заголовків
+\RequirePackage{titlesec}
+\RequirePackage{placeins}
+
+% Формат заголовків розділів
+\titleformat{\chapter}[hang]
+    {\filcenter\normalfont\Large\bfseries}
+    {\thechapter}
+    {0.2cm}
+    {\Large}
+\titlespacing{\chapter}{1pt}{1pt}{8pt}[1pt]
+\renewcommand{\thechapter}{\arabic{chapter}.}
+
+% Формат заголовків секцій
+\titleformat{\section}[hang]
+	{\filright\normalfont\large\bfseries}
+    {\thesection}
+    {0.2cm}
+    {\large}
+\titlespacing{\section}{7pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}[1pt]
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}.}
+
+% Формат підсекцій
+\titleformat{\subsection}[hang]
+    {\filright\normalfont\large\bfseries}
+    {\thesubsection}
+    {0.2cm}
+    {\large}
+\titlespacing{\subsection}{7pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}[1pt]
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}.}
+
+% Формат підпідсекцій
+\titleformat{\subsubsection}[hang]
+    {\filright\normalfont\normalsize\bfseries}
+    {\thesubsubsection}
+    {0.2cm}
+    {\normalsize}
+\titlespacing{\subsubsection}{7pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}[1pt]
+
+% Формат абзацу
+\titleformat{\paragraph}[runin]
+    {\normalfont\normalsize\bfseries}
+    {\theparagraph}
+    {1em}
+    {}
+\titlespacing{\paragraph}{3.2ex}{1pt}{1ex plus .2ex minus .2ex}
+
+\makeatletter
+% Нумерація списку літератури
+\renewcommand{\@biblabel}[1]{#1. \hfil}
+
+% Відображення BibTeX у змісті
+\RequirePackage[nottoc]{tocbibind}
+
+% Перевизначення команди побудови змісту
+\renewcommand{\tableofcontents}{
+    \begin{center}
+        \large \bf Зміст
+    \end{center}
+    {
+        \hypersetup{hidelinks}
+        \@starttoc{toc}
+    }
+}
+\makeatother
+
+% Нумерація сторінок зверху справа
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\pagestyle{fancyplain}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% Ненумерований розділ
+\newcommand{\nnchapter}[1]{
+    \chapter*{#1}
+    \addcontentsline{toc}{chapter}{#1}
+}
+
+% Висновки до розділу
+\newcommand{\chapterconclusions}{
+    \section*{Висновки до розділу \arabic{chapter}}
+    \addcontentsline{toc}{section}{Висновки до розділу \arabic{chapter}}
+}
+
+\newcommand{\cyrtext}[1]
+    {\text{\textit{#1}}}
+
+% Великі римські цифри
+\newcommand{\RomanNumeral}[1]
+    {\MakeUppercase{\romannumeral #1}}
+
+% Коротке перемикання мов
+\newcommand{\EnUa}[1]
+    {\selectlanguage{english}#1\selectlanguage{ukrainian}}
+\newcommand{\UaEn}[1]
+    {\selectlanguage{ukrainian}#1\selectlanguage{english}}
+
+\newcommand{\textE}[1]
+    {\text{\EnUa{#1}}}
+
+\newcommand{\texti}[1]
+    {\text{\tiny{#1}}}
+
+\newcommand{\gC}
+    {\textdegree \EnUa{C}}
+
+% Додатковий набір значень для tabularx
+% сума всіх значень повинна дорівнювати сумі колонок
+\newcolumntype{L}[1]{>{\hsize=#1\hsize\raggedright\arraybackslash}X}
+\newcolumntype{R}[1]{>{\hsize=#1\hsize\raggedleft\arraybackslash}X}
+\newcolumntype{C}[1]{>{\hsize=#1\hsize\centering\arraybackslash}X}
+
+% Вертикальне вирівнювання для tabularx
+\renewcommand{\tabularxcolumn}[1]{>{\normalsize}m{#1}}
+
+% Підпис таблиць у стилі MS Word
+\RequirePackage{caption}
+\DeclareCaptionLabelFormat{mylabelformat}{\hfillТаблиця~#2}
+\captionsetup[table]{
+    labelformat=mylabelformat,
+    labelfont=it,
+    labelsep=newline,
+    singlelinecheck=on
+}
+
+\providecommand{\keywords}[1]
+{
+    \iflanguage{english}{
+        Key words: #1.
+    }{
+        \iflanguage{ukrainian}{
+            Ключові слова: #1.
+        }{
+        }
+    }
+    \vfill
+}
+
+% Конфлікт babel з символом \AA
+\renewcommand{\AA}
+    {\ensuremath{\mathring{\textE{A}}}}
+
+% Ненахилені грецькі літери
+% \ProvidesPackage{rumathgrk}
+
+\DeclareSymbolFont{lettersA}{U}{txmia}{m}{it}
+\SetSymbolFont{lettersA}{bold}{U}{txmia}{bx}{it}
+\DeclareFontSubstitution{U}{txmia}{m}{it}
+\DeclareSymbolFontAlphabet{\mathfrak}{lettersA}
+
+\DeclareMathSymbol{\alphaup}{\mathord}{lettersA}{11}
+\DeclareMathSymbol{\betaup}{\mathord}{lettersA}{12}
+\DeclareMathSymbol{\gammaup}{\mathord}{lettersA}{13}
+\DeclareMathSymbol{\deltaup}{\mathord}{lettersA}{14}
+\DeclareMathSymbol{\epsilonup}{\mathord}{lettersA}{15}
+\DeclareMathSymbol{\zetaup}{\mathord}{lettersA}{16}
+\DeclareMathSymbol{\etaup}{\mathord}{lettersA}{17}
+\DeclareMathSymbol{\thetaup}{\mathord}{lettersA}{18}
+\DeclareMathSymbol{\iotaup}{\mathord}{lettersA}{19}
+\DeclareMathSymbol{\kappaup}{\mathord}{lettersA}{20}
+\DeclareMathSymbol{\lambdaup}{\mathord}{lettersA}{21}
+\DeclareMathSymbol{\muup}{\mathord}{lettersA}{22}
+\DeclareMathSymbol{\nuup}{\mathord}{lettersA}{23}
+\DeclareMathSymbol{\xiup}{\mathord}{lettersA}{24}
+\DeclareMathSymbol{\piup}{\mathord}{lettersA}{25}
+\DeclareMathSymbol{\rhoup}{\mathord}{lettersA}{26}
+\DeclareMathSymbol{\sigmaup}{\mathord}{lettersA}{27}
+\DeclareMathSymbol{\tauup}{\mathord}{lettersA}{28}
+\DeclareMathSymbol{\upsilonup}{\mathord}{lettersA}{29}
+\DeclareMathSymbol{\phiup}{\mathord}{lettersA}{30}
+\DeclareMathSymbol{\chiup}{\mathord}{lettersA}{31}
+\DeclareMathSymbol{\psiup}{\mathord}{lettersA}{32}
+\DeclareMathSymbol{\omegaup}{\mathord}{lettersA}{33}
+\DeclareMathSymbol{\varepsilonup}{\mathord}{lettersA}{34}
+\DeclareMathSymbol{\varthetaup}{\mathord}{lettersA}{35}
+\DeclareMathSymbol{\varpiup}{\mathord}{lettersA}{36}
+\DeclareMathSymbol{\varrhoup}{\mathord}{lettersA}{37}
+\DeclareMathSymbol{\varsigmaup}{\mathord}{lettersA}{38}
+\DeclareMathSymbol{\varphiup}{\mathord}{lettersA}{39}
+
+\endinput
